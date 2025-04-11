@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Color Palette to PDF</title>
+</head>
+<body>
+<h1>Generate Color Palette from CSV</h1>
+<label for="csvFile">Choose CSV file:</label>
+<input type="file" id="csvFile" accept=".csv"><br><br>
+<label for="perRow">Boxes per row:</label>
+<input type="number" id="perRow" value="3" min="1" max="10"><br><br>
+<button onclick="processCSV()">Generate PDF</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+   // Convert HEX to RGB
+   function hexToRgb(hex) {
+     hex = hex.replace('#', '');
+     if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+     const bigint = parseInt(hex, 16);
+     return {
+       r: (bigint >> 16) & 255,
+       g: (bigint >> 8) & 255,
+       b: bigint & 255
+     };
+   }
+   // Parse CSV into array of color objects
+   function parseCSV(text) {
+     const rows = text.trim().split('\n').slice(1); // skip header
+     return rows.map(row => {
+       const [name, hex] = row.split(',');
+       return { name: name.trim(), hex: hex.trim() };
+     });
+   }
+   // Main function to read CSV and generate the PDF
+   async function processCSV() {
+     const fileInput = document.getElementById('csvFile');
+     const boxesPerRow = parseInt(document.getElementById('perRow').value);
+     if (!fileInput.files.length) return alert('Please upload a CSV file first.');
+     if (isNaN(boxesPerRow) || boxesPerRow < 1) return alert('Enter a valid number of boxes per row.');
+     const file = fileInput.files[0];
+     const text = await file.text();
+     const colors = parseCSV(text);
+     const { jsPDF } = window.jspdf;
+     const doc = new jsPDF({ orientation: 'landscape'});
+     const boxSize = 30;
+     const padding = 10;
+     const textHeight = 18;
+     let x = 20;
+     let y = 20;
+     colors.forEach((color, index) => {
+       const rgb = hexToRgb(color.hex);
+       const centerX = x + boxSize / 2;
+       // Draw color box
+       doc.setDrawColor(220); // outline color
+       doc.setFillColor(rgb.r, rgb.g, rgb.b);
+       doc.rect(x, y, boxSize, boxSize, 'FD'); // F = fill, D = draw border
+       // Add centered text
+       doc.setTextColor(0, 0, 0);
+       doc.setFontSize(8);
+       doc.text(color.name, centerX, y + boxSize + 5, { align: 'center' });
+       doc.text(color.hex, centerX, y + boxSize + 9, { align: 'center' });
+       doc.text(`RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`, centerX, y + boxSize + 13, { align: 'center' });
+       // Move to next column
+       x += boxSize + padding;
+       // Wrap to next row
+       if ((index + 1) % boxesPerRow === 0) {
+         x = 20;
+         y += boxSize + textHeight + padding;
+       }
+       // Create a new page if reaching bottom
+       if (y > 250) {
+         doc.addPage();
+         x = 20;
+         y = 20;
+       }
+     });
+     doc.save('color_palette.pdf');
+   }
+</script>
+</body>
+</html>
