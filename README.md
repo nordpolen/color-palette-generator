@@ -1,1 +1,1 @@
-# color_palette_generator
+# Color Palette Generator
