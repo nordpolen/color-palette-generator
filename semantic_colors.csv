@@ -1,15 +1,15 @@
-name, hex
-Positive, #329A5D
-Positive Subtle, #CEE3D7
-Negative, #F03040
-Negative Subtle, #F4CED1
-Warning, #F59E0B
-Warning Subtle, #F5E4C6
-Severe, #FF7300
-Severe Subtle, #F6DBC8
-Critical, #C2410C
-Critical Subtle, #EBD1C6
-Catastrophical, #9F1239
-Catastrophical Subtle, #E4C8CF
-Dead, #462D6E
-Dead Subtle, #D2CDDA
+Name,Hex
+Positive,#329A5D
+Positive Subtle,#CEE3D7
+Negative,#F03040
+Negative Subtle,#F4CED1
+Warning,#F59E0B
+Warning Subtle,#F5E4C6
+Severe,#FF7300
+Severe Subtle,#F6DBC8
+Critical,#C2410C
+Critical Subtle,#EBD1C6
+Catastrophical,#9F1239
+Catastrophical Subtle,#E4C8CF
+Dead,#462D6E
+Dead Subtle,#D2CDDA
