@@ -9,7 +9,7 @@ The **Color Palette Generator** is a tool designed to streamline the process of 
     - Color swatches for visual reference.
     - Hex codes for precise color identification.
     - RGB values for compatibility with various design tools.
-- **Fast and Easy Exporting**: Quickly create professional-looking color palette documents.
+- **Fast and Easy Exporting**: Quickly create professional-looking color palette documents in a PDF format for sharing with your team.
 
 ## Installation
 
